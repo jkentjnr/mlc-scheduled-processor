@@ -1,0 +1,9 @@
+node_modules
+lib
+
+.DS_Store
+
+res/infrastructure/.terraform
+.terraform
+
+.serverless

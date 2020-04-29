@@ -1,0 +1,22 @@
+service: default
+
+provider:
+  name: aws
+
+package:
+  excludeDevDependencies: ${self:custom.excludeDevDependencies.${opt:stage}, self.custom.excludeDevDependencies.other}
+  exclude:
+    - ".serverless/**"
+    - "__tests__/**"
+    - "res/**"
+    - "src/**"
+
+custom:
+  excludeDevDependencies:
+    dev: true
+    uat: true
+    other: true
+   
+functions:
+  cronHandlerExtract:
+    handler: lib/cronHandler.extract

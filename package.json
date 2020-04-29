@@ -1,0 +1,47 @@
+{
+  "name": "mlc-scheduled-processor",
+  "version": "1.0.0",
+  "description": "AWS Scheduled Execution Engine",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel src -d lib",
+    "deploy:dev": "cross-env AWS_PROFILE=mlc-dev S3_BUCKET=mlc-scheduled-processor-dropbox ./res/build.sh dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jkentjnr/mlc-scheduled-processor.git"
+  },
+  "author": "James Kent (james.kent@mlcinsurance.com.au)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jkentjnr/mlc-scheduled-processor/issues"
+  },
+  "homepage": "https://github.com/jkentjnr/mlc-scheduled-processor#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.7.7",
+    "@babel/core": "^7.7.7",
+    "@babel/node": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "aws-sdk": "^2.594.0",
+    "babel-jest": "^24.9.0",
+    "babel-watch": "^7.0.0",
+    "cross-env": "^5.2.1",
+    "jest": "^24.9.0",
+    "lodash": "^4.17.15"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.7.0",
+    "uuid": "^3.3.3",
+    "winston": "^3.2.1"
+  },
+  "jest": {
+    "modulePaths": [
+      "<rootDir>/src/"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/node_modules/",
+      "resources/"
+    ]
+  }
+}
