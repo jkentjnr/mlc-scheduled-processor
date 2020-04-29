@@ -86,7 +86,12 @@ resource "aws_iam_policy" "lambda_policy" {
       "Effect": "Allow",
       "Resource": [
         "${aws_lambda_function.cron-workflow.arn}",
-        "${aws_lambda_function.workflow-extract.arn}"
+        "${aws_lambda_function.workflow-query.arn}",
+        "${aws_lambda_function.workflow-transform.arn}",
+        "${aws_lambda_function.workflow-renderer.arn}",
+        "${aws_lambda_function.workflow-renderer-finaliser.arn}",
+        "${aws_lambda_function.workflow-finaliser.arn}",
+        "${aws_lambda_function.workflow-journal.arn}"
       ]
     },
     {

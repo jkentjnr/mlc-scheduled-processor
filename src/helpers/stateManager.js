@@ -10,7 +10,7 @@ export default class stateManager {
 
         let payloadResponse;
         try {
-            const payloadKey = `state/${executionKey}`;
+            const payloadKey = `.state/${executionKey}`;
             payloadResponse = await s3Manager.getObject(logger, s3bucket, payloadKey);
         }
         catch (e) {
@@ -27,7 +27,7 @@ export default class stateManager {
         const s3bucket = await secretManager.getValue(logger, 'S3_BUCKET');
 
         // Upsert payload for this execution
-        try { await s3Manager.putObject(logger, s3bucket, `state/${state.executionKey}`, JSON.stringify(state, null, 2)); }
+        try { await s3Manager.putObject(logger, s3bucket, `.state/${state.executionKey}`, JSON.stringify(state, null, 2)); }
         catch (e) { console.log('Exception', e); throw new Error('Unable to persist payload to data store'); }
     }
 

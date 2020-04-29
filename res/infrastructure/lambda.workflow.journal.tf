@@ -1,15 +1,15 @@
 locals {
-  lambda-cron-workflow-function_name = "${local.workspaceName}-lambda-cron-workflow"
+  lambda-workflow-journal-function_name = "${local.workspaceName}-lambda-workflow-journal"
 }
 
-resource "aws_lambda_function" "cron-workflow" {
+resource "aws_lambda_function" "workflow-journal" {
   s3_bucket        = var.dropbox_bucket
   s3_key           = "${terraform.workspace}/lambda.zip"
   source_code_hash = filebase64sha256("../../.serverless/default.zip")
 
-  function_name    = local.lambda-cron-workflow-function_name
+  function_name    = local.lambda-workflow-journal-function_name
   role             = aws_iam_role.lambda_role.arn
-  handler          = "lib/cronHandler.workflow"
+  handler          = "lib/workflowHandler.journal"
   timeout          = var.internal_timeout
   memory_size      = var.lambda_memory_usage
 
@@ -29,7 +29,7 @@ resource "aws_lambda_function" "cron-workflow" {
 
 }
 
-resource "aws_cloudwatch_log_group" "cron-workflow" {
-  name              = "/aws/lambda/${local.lambda-cron-workflow-function_name}"
+resource "aws_cloudwatch_log_group" "workflow-journal" {
+  name              = "/aws/lambda/${local.lambda-workflow-journal-function_name}"
   retention_in_days = var.production == 0 ? 1 : 30
 }

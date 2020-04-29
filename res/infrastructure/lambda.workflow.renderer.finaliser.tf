@@ -1,15 +1,15 @@
 locals {
-  lambda-workflow-extract-function_name = "${local.workspaceName}-lambda-workflow-extract"
+  lambda-workflow-renderer-finaliser-function_name = "${local.workspaceName}-lambda-workflow-renderer-finaliser"
 }
 
-resource "aws_lambda_function" "workflow-extract" {
+resource "aws_lambda_function" "workflow-renderer-finaliser" {
   s3_bucket        = var.dropbox_bucket
   s3_key           = "${terraform.workspace}/lambda.zip"
   source_code_hash = filebase64sha256("../../.serverless/default.zip")
 
-  function_name    = local.lambda-workflow-extract-function_name
+  function_name    = local.lambda-workflow-renderer-finaliser-function_name
   role             = aws_iam_role.lambda_role.arn
-  handler          = "lib/workflowHandler.extract"
+  handler          = "lib/workflowHandler.renderFinaliser"
   timeout          = var.internal_timeout
   memory_size      = var.lambda_memory_usage
 
@@ -29,7 +29,7 @@ resource "aws_lambda_function" "workflow-extract" {
 
 }
 
-resource "aws_cloudwatch_log_group" "workflow-extract" {
-  name              = "/aws/lambda/${local.lambda-workflow-extract-function_name}"
-  retention_in_days = var.production == 0 ? 7 : 30
+resource "aws_cloudwatch_log_group" "workflow-renderer-finaliser" {
+  name              = "/aws/lambda/${local.lambda-workflow-renderer-finaliser-function_name}"
+  retention_in_days = var.production == 0 ? 1 : 30
 }

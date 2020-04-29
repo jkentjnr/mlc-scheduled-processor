@@ -1,34 +1,31 @@
 import shortid from 'shortid';
 
-export default class DataService {
+export default class SomeEnterpriseApiProvider {
 
-    // MOCKED
-    static async executeJob(day, jobId) {
-
-        // Simulate: getting metadata by Job
-        const job = [{
-            jobId: 1,
-            query: 'SELECT * FROM mock.vwSEN_ProtectionFirst',
-            docType: '123_SEN_PF',
-        }];
+    async execute(logger, executionKey, context, job) {
 
         // Simulate: executing query by Job and returning results
+
         const data = [];
         for (let i = 0; i < 25; i++) {
+            const key = shortid.generate();
+
             data.push({
-                policyNo: shortid.generate(),
+                key,
                 status: 'PENDING',
                 createdAt: new Date(),
                 updatedAt: new Date(),
+
+                record: {
+                    policyNo: key,
+                }
             });
         }
-        
+
         return {
             success: true,
-            job,
             data,
         };
-
+    
     }
-
 }
