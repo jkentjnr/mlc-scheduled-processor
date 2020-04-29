@@ -10,4 +10,4 @@ phases:
       - cd /tmp && curl -o terraform.zip https://releases.hashicorp.com/terraform/0.12.16/terraform_0.12.16_linux_amd64.zip && unzip terraform.zip && mv terraform /usr/bin && cd $CODEBUILD_SRC_DIR
   build:
     commands:
-       - ./build.1.sh
+       - ./res/build.sh

@@ -7,3 +7,7 @@ res/infrastructure/.terraform
 .terraform
 
 .serverless
+
+res/infrastructure/terraform.tfstate.d/*
+res/infrastructure/terraform.tfstate.d/dev/terraform.tfstate
+res/infrastructure/terraform.tfstate.d/dev/terraform.tfstate.backup

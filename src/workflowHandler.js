@@ -4,9 +4,9 @@ import { createContextualLogger } from './helpers/logger';
 import dataService from './mocks/dataService';
 import stateManager from './helpers/stateManager';
 
-let data = null;
 let executionCounter = 0;
 
+// WORKFLOW: Step #1: ExecuteQuery
 module.exports.extract = async (event, context) => { 
     
     const logger = createContextualLogger(context);
@@ -14,11 +14,24 @@ module.exports.extract = async (event, context) => {
     logger.verbose({ action: 'log', domain: 'lambda', text: 'event', value: event });
     logger.verbose({ action: 'log', domain: 'lambda', text: 'context', value: context });
     logger.verbose({ action: 'log', domain: 'lambda', text: 'executionCounter', value: executionCounter++ });
-    logger.verbose({ action: 'log', domain: 'data', text: 'initialised', value: (!!data) });
 
-    // Get Jobs from DynamoDB (mocked)
-    const jobList = await dataService.getJobs();
-    logger.verbose({ action: 'log', domain: 'data', text: 'jobList', value: jobList });
+    // Check for parameters
+    if (!event || !event.executionKey) throw new Error('Missing Execution Key');
+    if (!event || !event.jobId) throw new Error('Missing Job Id');
+
+    // Get Polices for specified Job (mocked)
+    const result = await dataService.executeJob(new Date(), event.jobId);
+    logger.verbose({ action: 'log', domain: 'get-policies', text: 'result', value: result });
+
+    // Check for success
+    if (!result || !result.success) throw new Error('Could not execute job query.');
+
+    // Persist the data to S3 -- too large to pass around as Lambda results.
+    await stateManager.persistPayloadToDataStore(logger, {
+        executionKey: event.executionKey,
+        query: result.query,
+        data: result.data,
+    });
 
     return null;
 

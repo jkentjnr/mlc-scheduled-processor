@@ -34,11 +34,11 @@ variable "reporting_status_report_folder" {
 # ---------------------------------------------
 # Cron Jobs
 
-variable "cron_extract_schedule" {
+variable "cron_workflow_schedule" {
   default     = "rate(10 minutes)"
 }
 
-variable "cron_extract_enable" {
+variable "cron_workflow_enable" {
   default     = false
 }
 
