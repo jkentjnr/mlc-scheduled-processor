@@ -47,7 +47,7 @@ cd res/infrastructure
 #echo ""
 
 #AWS_PROFILE=$AWS_PROFILE terraform apply -auto-approve -var-file="../../config/$1.tfvars.json"
-terraform apply -var-file="../../config/$1.tfvars.json"
+terraform apply -var-file="../../config/$1.tfvars.json" -auto-approve
 [ $? -eq 0 ] || exit 1
 echo ""
 

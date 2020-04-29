@@ -52,12 +52,7 @@ resource "aws_iam_role_policy_attachment" "role_attach_lambda_role-custom" {
 #      "Action": [ "dynamodb:BatchGetItem", "dynamodb:GetItem", "dynamodb:BatchWriteItem", "dynamodb:WriteItem" ],
 #      "Effect": "Allow",
 #      "Resource": [
-#        "${aws_dynamodb_table.everydayhero_campaigns.arn}",
-#        "${aws_dynamodb_table.everydayhero_donations.arn}",
-#        "${aws_dynamodb_table.everydayhero_donors.arn}",
-#        "${aws_dynamodb_table.everydayhero_pages.arn}",
-#        "${aws_dynamodb_table.everydayhero_teams.arn}",
-#        "${aws_dynamodb_table.everydayhero_users.arn}"
+#        "${aws_dynamodb_table.x.arn}",
 #      ]
 #    }
 #  ]
@@ -75,6 +70,11 @@ resource "aws_iam_policy" "lambda_policy" {
   "Version": "2012-10-17",
   "Statement": [
     {
+      "Action": [ "secretsmanager:GetSecretValue" ],
+      "Effect": "Allow",
+      "Resource": "arn:aws:secretsmanager:${var.aws_region}:${data.aws_caller_identity.current.account_id}:secret:${var.name}/${terraform.workspace}/*"
+    },
+    {
       "Action": [ "kms:Encrypt", "kms:Decrypt", "kms:ReEncrypt*", "kms:GenerateDataKey*", "kms:DescribeKey" ],
       "Effect": "Allow",
       "Resource": [
@@ -85,7 +85,8 @@ resource "aws_iam_policy" "lambda_policy" {
       "Action": [ "lambda:InvokeFunction" ],
       "Effect": "Allow",
       "Resource": [
-        "${aws_lambda_function.cron-extract.arn}"
+        "${aws_lambda_function.cron-workflow.arn}",
+        "${aws_lambda_function.workflow-extract.arn}"
       ]
     },
     {
@@ -103,6 +104,13 @@ resource "aws_iam_policy" "lambda_policy" {
       ],
       "Resource": "arn:aws:logs:*:*:*",
       "Effect": "Allow"
+    },
+    {
+      "Action": [ "states:StartExecution" ],
+      "Effect": "Allow",
+      "Resource": [
+        "${aws_sfn_state_machine.workflow.id}"
+      ]
     }
   ]
 }
