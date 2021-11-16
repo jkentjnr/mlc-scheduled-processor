@@ -23,7 +23,7 @@
     "@babel/core": "^7.7.7",
     "@babel/node": "^7.7.7",
     "@babel/preset-env": "^7.7.7",
-    "aws-sdk": "^2.594.0",
+    "aws-sdk": "^2.814.0",
     "babel-jest": "^24.9.0",
     "babel-watch": "^7.0.0",
     "cross-env": "^5.2.1",
